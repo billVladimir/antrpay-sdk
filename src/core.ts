@@ -5,7 +5,8 @@ export enum Curerncy {
 }
 
 export interface InitParams {
-  apiKey: string;
+  publicKey: string;
+  secretKey: string;
   baseUrl?: string;
 }
 
@@ -28,13 +29,21 @@ export interface CreatePaymentFormResponse {
   formURL: string;
 }
 
+export interface GetOrderDetailsParams {
+  clientOrderID: string;
+  uuid: string;
+  type: "invoice" | "withdrawal";
+}
+
 export class Antrpay {
-  private readonly apiKey: string;
+  private readonly publicKey: string;
+  private readonly secretKey: string;
   private readonly baseUrl: string = "https://antrpay.com/api/api";
   private readonly axiosInstance: AxiosInstance;
 
-  constructor({ apiKey, baseUrl }: InitParams) {
-    this.apiKey = apiKey;
+  constructor({ publicKey, secretKey, baseUrl }: InitParams) {
+    this.publicKey = publicKey;
+    this.secretKey = secretKey;
     if (baseUrl) {
       this.baseUrl = baseUrl;
     }
@@ -42,14 +51,36 @@ export class Antrpay {
       baseURL: this.baseUrl,
       headers: {
         "Content-Type": "application/json",
-        "API-Key": this.apiKey,
+        "API-Key": this.publicKey,
       },
     });
   }
 
+  /**
+   * Method for creating a Fast Payment System payment using Antrpay payment page
+   *
+   * @param {CreatePaymentFormParams} params
+   * @returns {object}
+   */
   public async createPaymentForm(params: CreatePaymentFormParams) {
     const response = await this.axiosInstance.post(
       `/repayment/create_payment_fps`,
+      params,
+    );
+    return response.data;
+  }
+
+  /**
+   * Method for detailed information about an order
+   *
+   * You need to use the "clientOrderID" or "uuid" to search information about the order.
+   *
+   * @param {GetOrderDetailsParams} params
+   * @returns {object}
+   */
+  public async getOrderDetails(params: GetOrderDetailsParams) {
+    const response = await this.axiosInstance.post(
+      `/repayment/fetch_order_info`,
       params,
     );
     return response.data;
