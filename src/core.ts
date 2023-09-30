@@ -1,5 +1,22 @@
 import axios, { AxiosInstance } from "axios";
 
+export interface CreatePayoutParams {
+  UUID: string;
+  clientOrderID: string;
+  sum: number;
+  ttl: number;
+  message: string;
+  type: string;
+  walletID: number;
+  webhookUrl: string;
+  cardNumber: string;
+  payerInfo: PayerInfo;
+}
+
+export interface PayerInfo {
+  payerID: string;
+}
+
 export enum Curerncy {
   RUB = 1,
 }
@@ -81,6 +98,28 @@ export class Antrpay {
   public async getOrderDetails(params: GetOrderDetailsParams) {
     const response = await this.axiosInstance.post(
       `/repayment/fetch_order_info`,
+      params,
+    );
+    return response.data;
+  }
+
+  /**
+   * Method for current balance for each of the available currencies
+   */
+  public async balanceInfo() {
+    const response = await this.axiosInstance.post(
+      `/repayment/fetch_balance`,
+      {},
+    );
+    return response.data;
+  }
+
+  /**
+   * Method for create withdrawal request
+   */
+  public async createPayout(params: CreatePayoutParams) {
+    const response = await this.axiosInstance.post(
+      `/repayment/create_payout`,
       params,
     );
     return response.data;
