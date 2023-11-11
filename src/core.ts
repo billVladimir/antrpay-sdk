@@ -17,7 +17,7 @@ export interface PayerInfo {
   payerID: string;
 }
 
-export enum Curerncy {
+export enum Currency {
   RUB = 1,
 }
 
@@ -32,12 +32,13 @@ export interface CreatePaymentFormParams {
   payerID: string;
   amount: number;
   expireAt: number;
-  currencyID: Curerncy.RUB;
+  currencyID: Currency.RUB;
   webhookURL: string;
   redirectURLs: {
     successUrl: string;
     failUrl: string;
   };
+  clientIP: string;
 }
 
 export interface CreatePaymentFormResponse {
@@ -79,7 +80,9 @@ export class Antrpay {
    * @param {CreatePaymentFormParams} params
    * @returns {object}
    */
-  public async createPaymentForm(params: CreatePaymentFormParams) {
+  public async createPaymentForm(
+    params: CreatePaymentFormParams,
+  ): Promise<CreatePaymentFormResponse> {
     const response = await this.axiosInstance.post(
       `/repayment/create_payment_fps`,
       params,
