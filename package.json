@@ -9,7 +9,6 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
     "format": "npx prettier . --write",
     "release": "standard-version"
   },

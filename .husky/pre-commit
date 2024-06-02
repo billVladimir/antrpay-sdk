@@ -1,0 +1,4 @@
+#!/bin/sh
+if [ "$HUSKY_GIT_PARAMS" != "" ]; then
+  npm run release -- --release-as patch && git add CHANGELOG.md
+fi
