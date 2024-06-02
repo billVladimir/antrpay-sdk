@@ -1,4 +1,4 @@
 #!/bin/sh
-if [ "$HUSKY_GIT_PARAMS" != "" ]; then
-  npm run release -- --release-as patch && git add CHANGELOG.md
+if [ -z "$SKIP_HOOKS_ON_VERSION" ]; then
+  git add CHANGELOG.md
 fi
