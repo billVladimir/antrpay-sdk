@@ -1,5 +1,17 @@
 import axios, { AxiosInstance } from "axios";
 
+export enum TypeOperation {
+  Invoice = "invoice",
+  Withdraw = "withdraw",
+}
+
+export enum Status {
+  Created = 1,
+  Pending,
+  Failed,
+  Succeed,
+}
+
 export interface CreatePayoutParams {
   UUID: string;
   clientOrderID: string;
@@ -10,6 +22,7 @@ export interface CreatePayoutParams {
   walletID: number;
   webhookUrl: string;
   cardNumber: string;
+  bankName?: string;
   payerInfo: PayerInfo;
 }
 
@@ -53,6 +66,19 @@ export interface GetOrderDetailsParams {
   type: "invoice" | "withdrawal";
 }
 
+export interface GettingOrdersParams {
+  statusId?: Status;
+  sumAt?: number;
+  sumTo?: number;
+  createdAtFrom?: number;
+  createdAtTo?: number;
+  id?: string;
+  type?: TypeOperation;
+  gatewayName?: string;
+  limit: number;
+  offset: number;
+}
+
 export class Antrpay {
   private readonly publicKey: string;
   private readonly secretKey: string;
@@ -65,20 +91,20 @@ export class Antrpay {
     if (baseUrl) {
       this.baseUrl = baseUrl;
     }
-    this.axiosInstance = axios.create({
+    const axiosInstance = axios.create({
       baseURL: this.baseUrl,
       headers: {
         "Content-Type": "application/json",
         "API-Key": this.publicKey,
       },
     });
+    this.axiosInstance = axiosInstance;
   }
+
+  // PAYMENT
 
   /**
    * Method for creating a Fast Payment System payment using Antrpay payment page
-   *
-   * @param {CreatePaymentFormParams} params
-   * @returns {object}
    */
   public async createPaymentForm(
     params: CreatePaymentFormParams,
@@ -90,13 +116,25 @@ export class Antrpay {
     return response.data;
   }
 
+  // PAYOUT
+
+  /**
+   * Method for create withdrawal request
+   */
+  public async createPayout(params: CreatePayoutParams) {
+    const response = await this.axiosInstance.post(
+      `/repayment/create_payout`,
+      params,
+    );
+    return response.data;
+  }
+
+  // ORDERS
+
   /**
    * Method for detailed information about an order
    *
    * You need to use the "clientOrderID" or "uuid" to search information about the order.
-   *
-   * @param {GetOrderDetailsParams} params
-   * @returns {object}
    */
   public async getOrderDetails(params: GetOrderDetailsParams) {
     const response = await this.axiosInstance.post(
@@ -118,11 +156,11 @@ export class Antrpay {
   }
 
   /**
-   * Method for create withdrawal request
+   * Method for getting orders' information by filtering.
    */
-  public async createPayout(params: CreatePayoutParams) {
+  public async getOrders(params: GettingOrdersParams) {
     const response = await this.axiosInstance.post(
-      `/repayment/create_payout`,
+      `/repayment/get_orders`,
       params,
     );
     return response.data;
