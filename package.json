@@ -9,9 +9,9 @@
   ],
   "scripts": {
     "build": "tsc",
+    "prepare": "husky",
     "format": "npx prettier . --write",
-    "release": "standard-version",
-    "precommit": "npm run release -- --release-as patch && git add CHANGELOG.md"
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "SKIP_HOOKS_ON_VERSION=1 npm run release"
+      "pre-commit": "npm run release && git add package.json CHANGELOG.md"
     }
   }
 }

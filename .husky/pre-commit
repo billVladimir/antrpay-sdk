@@ -1,4 +1,0 @@
-#!/bin/sh
-if [ -z "$SKIP_HOOKS_ON_VERSION" ]; then
-  git add CHANGELOG.md
-fi
