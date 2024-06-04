@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/billVladimir/antrpay-sdk/compare/v0.0.7...v0.0.8) (2024-06-04)
+
+
+### Features
+
+* first test ([f7d516d](https://github.com/billVladimir/antrpay-sdk/commit/f7d516def2c8352205dc450698fa6e00d3809a5f))
+
+
+### Bug Fixes
+
+* update husky config ([cf855d9](https://github.com/billVladimir/antrpay-sdk/commit/cf855d9c15d652c81487aef602108e5d79dc2296))
+
 ### [0.0.27](https://github.com/billVladimir/antrpay-sdk/compare/v0.0.7...v0.0.27) (2024-06-03)
 
 ### Features
