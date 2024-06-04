@@ -1,6 +1,6 @@
 {
   "name": "antrpay",
-  "version": "0.0.27",
+  "version": "0.0.7",
   "description": "Antrpay SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     "prepare": "husky",
     "format": "npx prettier . --write",
     "release": "standard-version",
-    "test": "echo 'test'"
+    "commitlint": "commitlint"
   },
   "repository": {
     "type": "git",
