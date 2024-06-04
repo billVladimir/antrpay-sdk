@@ -1,6 +1,6 @@
 {
   "name": "antrpay",
-  "version": "0.0.7",
+  "version": "0.0.27",
   "description": "Antrpay SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,6 +34,8 @@
     "standard-version": "^9.5.0"
   },
   "dependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "axios": "^1.5.0"
   }
 }
