@@ -32,6 +32,14 @@ export interface PayerInfo {
 
 export enum Currency {
   RUB = 1,
+  KZT = 3,
+  EUR = 4,
+  INT = 34,
+  TRY = 35,
+  UZS = 36,
+  AZN = 37,
+  KGS = 38,
+  BYN = 39,
 }
 
 export interface InitParams {
@@ -45,7 +53,7 @@ export interface CreatePaymentFormParams {
   payerID: string;
   amount: number;
   expireAt: number;
-  currencyID: Currency.RUB;
+  currencyID: Currency;
   webhookURL: string;
   redirectURLs: {
     successUrl: string;
@@ -59,6 +67,23 @@ export interface CreatePaymentFormResponse {
   externalID: string;
   formURL: string;
 }
+
+export interface P2PPaymentFormParams {
+  clientOrderID: string;
+  payerID: string;
+  amount: number;
+  expireAt: number;
+  comment: string;
+  clientIP: string;
+  currencyID: Currency;
+  callbackURL: string;
+  redirect: {
+    successURL: string;
+    failURL: string;
+  };
+}
+
+export interface P2PPaymentFormResponse extends CreatePaymentFormResponse {}
 
 export interface GetOrderDetailsParams {
   clientOrderID: string;
@@ -111,6 +136,16 @@ export class Antrpay {
   ): Promise<CreatePaymentFormResponse> {
     const response = await this.axiosInstance.post(
       `/repayment/create_payment_fps`,
+      params,
+    );
+    return response.data;
+  }
+
+  public async p2pPaymentForm(
+    params: P2PPaymentFormParams,
+  ): Promise<P2PPaymentFormResponse> {
+    const response = await this.axiosInstance.post(
+      `/repayment/p2p_form`,
       params,
     );
     return response.data;
